@@ -1,18 +1,37 @@
 <script setup lang="ts">
-import ThePlaceholder from './components/ThePlaceholder.vue'
+import MainLayout from './components/layouts/MainLayout.vue'
+import { supabase } from './lib/supabaseClient'
+import { onMounted } from 'vue'
+import { useSessionStore } from '@/stores/session'
+
+const sessionStore = useSessionStore()
+
+onMounted(async () => {
+  try {
+    // Fetch the current session from Supabase
+    const {
+      data: { session: currentSession },
+      error: getSessionError,
+    } = await supabase.auth.getSession()
+    if (getSessionError) {
+      console.error('Error fetching session:', getSessionError)
+    } else {
+      sessionStore.session = currentSession
+    }
+
+    supabase.auth.onAuthStateChange((event, newSession) => {
+      sessionStore.session = newSession
+    })
+  } catch (error) {
+    console.error('Error in onMounted:', error)
+  }
+})
 </script>
 
 <template>
-  <header>
-    <nav class="mx-auto flex items-center justify-center p-6" aria-label="Global">
-      <div class="flex items-center gap-x-12">
-        <p class="text-xl font-bold">VUE MICRO FRONTEND SAMPLE PROJECT</p>
-      </div>
-    </nav>
-  </header>
-
-  <main class="grid md:grid-cols-2 grid-cols-1 min-h-[80vh] space-x-4">
-    <ThePlaceholder :number="1" />
-    <ThePlaceholder :number="2" />
-  </main>
+  <MainLayout>
+    <main class="">
+      <RouterView />
+    </main>
+  </MainLayout>
 </template>
