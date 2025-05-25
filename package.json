@@ -1,0 +1,17 @@
+{
+  "name": "micro-frontend-vue",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "lerna": "^8.2.2"
+  }
+}

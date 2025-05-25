@@ -1,10 +1,10 @@
 import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
-import { federation } from '@module-federation/vite'
-import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
+import tailwindcss from '@tailwindcss/vite'
+import { federation } from '@module-federation/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -13,22 +13,16 @@ export default defineConfig({
     vueDevTools(),
     tailwindcss(),
     federation({
-      name: 'host',
+      name: 'micro_task_list',
       filename: 'remoteEntry.js',
-      remotes: {
-        micro_task_list: {
-          type: 'module',
-          name: 'micro_task_list',
-          entry: 'http://localhost:5011/remoteEntry.js',
-          entryGlobalName: 'micro_task_list',
-          shareScope: 'default',
-        },
+      exposes: {
+        './entry': './src/App.vue',
       },
       shared: ['vue', 'vue-router', '@tailwindcss/vite'],
     }),
   ],
   server: {
-    port: 5010,
+    port: 5011,
   },
   resolve: {
     alias: {
