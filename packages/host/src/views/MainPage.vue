@@ -9,6 +9,6 @@ const TaskListMFE = defineAsyncComponent(
 
 <template>
   <TaskListMFE />
-  <ThePlaceholder :number="1" />
+
   <ThePlaceholder :number="2" />
 </template>
